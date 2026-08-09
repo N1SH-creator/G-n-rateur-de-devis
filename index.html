@@ -266,7 +266,30 @@ const supabaseClient = supabase.createClient(
 <div class="container">
 
 <h1>DevisFacile</h1>
+<div class="card">
 
+  <h2>Créer mon compte</h2>
+
+  <input
+    id="signupEmail"
+    type="email"
+    placeholder="Votre adresse email"
+  >
+
+  <input
+    id="signupPassword"
+    type="password"
+    placeholder="Mot de passe"
+    style="margin-top:10px;"
+  >
+
+  <button onclick="creerCompte()">
+    Créer mon compte
+  </button>
+
+  <p id="signupMessage"></p>
+
+</div>
 <p class="subtitle">
 Créez votre devis professionnel en quelques secondes.
 </p>
@@ -797,6 +820,43 @@ function genererDevis() {
 ajouterPrestation();
 
 </script>
+<script>
 
+async function creerCompte() {
+
+  const email =
+    document.getElementById("signupEmail").value;
+
+  const password =
+    document.getElementById("signupPassword").value;
+
+  if (!email || !password) {
+
+    document.getElementById("signupMessage").textContent =
+      "Veuillez remplir les deux champs.";
+
+    return;
+  }
+
+  const { data, error } =
+    await supabaseClient.auth.signUp({
+      email: email,
+      password: password
+    });
+
+  if (error) {
+
+    document.getElementById("signupMessage").textContent =
+      error.message;
+
+    return;
+  }
+
+  document.getElementById("signupMessage").textContent =
+    "Compte créé ! Vérifiez votre email si Supabase vous le demande.";
+
+}
+
+</script>
 </body>
 </html>
