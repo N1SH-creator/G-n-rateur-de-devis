@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevisFacile - Créez vos devis gratuitement</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f8;
+      color: #1f2937;
+      padding: 30px 15px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .total {
+      margin-top: 20px;
+      padding: 20px;
+      background: #f3f4f6;
+      border-radius: 10px;
+      text-align: right;
+    }
+
+    .total strong {
+      font-size: 24px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 9px;
+      background: #2563eb;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    @media (max-width: 650px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>DevisFacile</h1>
+    <p class="subtitle">
+      Créez votre devis simplement et gratuitement.
+    </p>
+
+    <div class="card">
+      <h2>Vos informations</h2>
+
+      <div class="grid">
+
+        <div>
+          <label>Nom / Entreprise</label>
+          <input id="entreprise" placeholder="Jean Dupont">
+        </div>
+
+        <div>
+          <label>SIRET</label>
+          <input id="siret" placeholder="123 456 789 00000">
+        </div>
+
+        <div>
+          <label>Email</label>
+          <input id="email" type="email" placeholder="vous@email.com">
+        </div>
+
+        <div>
+          <label>Téléphone</label>
+          <input id="telephone" placeholder="06 00 00 00 00">
+        </div>
+
+        <div class="full">
+          <label>Adresse</label>
+          <input id="adresse" placeholder="1 rue de Paris, 75000 Paris">
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="card">
+      <h2>Informations du client</h2>
+
+      <div class="grid">
+
+        <div>
+          <label>Nom / Entreprise du client</label>
+          <input id="client" placeholder="Entreprise cliente">
+        </div>
+
+        <div>
+          <label>Email du client</label>
+          <input id="clientEmail" type="email" placeholder="client@email.com">
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="card">
+      <h2>Prestation</h2>
+
+      <div class="grid">
+
+        <div class="full">
+          <label>Description</label>
+          <textarea id="description"
+            placeholder="Création d'un site internet..."></textarea>
+        </div>
+
+        <div>
+          <label>Prix HT (€)</label>
+          <input id="prix" type="number" min="0" step="0.01" placeholder="500">
+        </div>
+
+        <div>
+          <label>TVA</label>
+          <select id="tva">
+            <option value="0">0 %</option>
+            <option value="5.5">5,5 %</option>
+            <option value="10">10 %</option>
+            <option value="20" selected>20 %</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="total">
+        <p>Total TTC</p>
+        <strong id="total">0,00 €</strong>
+      </div>
+
+      <button onclick="genererDevis()">
+        Générer mon devis
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const prixInput = document.getElementById("prix");
+    const tvaInput = document.getElementById("tva");
+    const totalElement = document.getElementById("total");
+
+    function calculerTotal() {
+
+      const prix = parseFloat(prixInput.value) || 0;
+      const tva = parseFloat(tvaInput.value) || 0;
+
+      const total = prix + (prix * tva / 100);
+
+      totalElement.textContent =
+        total.toLocaleString("fr-FR", {
+          style: "currency",
+          currency: "EUR"
+        });
+    }
+
+    prixInput.addEventListener("input", calculerTotal);
+    tvaInput.addEventListener("change", calculerTotal);
+
+
+    function genererDevis() {
+
+      const entreprise =
+        document.getElementById("entreprise").value;
+
+      const client =
+        document.getElementById("client").value;
+
+      const description =
+        document.getElementById("description").value;
+
+      const prix =
+        document.getElementById("prix").value;
+
+      const tva =
+        document.getElementById("tva").value;
+
+      const total =
+        (parseFloat(prix) || 0) *
+        (1 + (parseFloat(tva) || 0) / 100);
+
+      alert(
+        "Devis créé !\n\n" +
+        "Entreprise : " + entreprise + "\n" +
+        "Client : " + client + "\n" +
+        "Prestation : " + description + "\n" +
+        "Total TTC : " +
+        total.toLocaleString("fr-FR", {
+          style: "currency",
+          currency: "EUR"
+        })
+      );
+    }
+
+  </script>
+
+</body>
+</html>
