@@ -15,13 +15,13 @@
 
 body {
   margin: 0;
-  padding: 30px;
+  padding: 30px 15px;
   background: #f3f4f6;
   color: #111827;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 950px;
   margin: auto;
 }
 
@@ -75,18 +75,18 @@ select {
 }
 
 textarea {
-  min-height: 100px;
+  min-height: 80px;
 }
 
 button {
   width: 100%;
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: 15px;
+  padding: 14px;
   border: none;
   border-radius: 8px;
   background: #2563eb;
   color: white;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
 }
@@ -95,48 +95,106 @@ button:hover {
   background: #1d4ed8;
 }
 
+.btn-secondary {
+  background: #10b981;
+}
+
+.btn-secondary:hover {
+  background: #059669;
+}
+
+.prestation {
+  border: 1px solid #e5e7eb;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.prestation-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 10px;
+  align-items: end;
+}
+
+.remove {
+  background: #ef4444;
+  margin-top: 10px;
+}
+
+.remove:hover {
+  background: #dc2626;
+}
+
 #devis {
   display: none;
   background: white;
-  padding: 50px;
+  padding: 45px;
   margin-top: 30px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.07);
 }
 
-.devis-header {
+.devis-top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 50px;
+  gap: 30px;
+  margin-bottom: 40px;
 }
 
 .devis-title {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: bold;
 }
 
-.ligne {
-  margin: 30px 0;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 15px;
-}
-
-.total {
-  text-align: right;
-  font-size: 24px;
-  font-weight: bold;
+table {
+  width: 100%;
+  border-collapse: collapse;
   margin-top: 30px;
 }
 
-.pdf-button {
-  background: #111827;
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
 }
 
-@media (max-width: 650px) {
+th {
+  background: #f3f4f6;
+}
+
+.resume {
+  margin-top: 25px;
+  margin-left: auto;
+  max-width: 300px;
+}
+
+.resume div {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+}
+
+.resume .grand-total {
+  border-top: 2px solid #111827;
+  margin-top: 8px;
+  padding-top: 12px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.actions {
+  margin-top: 30px;
+}
+
+@media (max-width: 700px) {
 
   body {
     padding: 15px;
   }
 
-  .grid {
+  .grid,
+  .prestation-grid {
     grid-template-columns: 1fr;
   }
 
@@ -148,10 +206,9 @@ button:hover {
     padding: 25px;
   }
 
-  .devis-header {
+  .devis-top {
     display: block;
   }
-
 }
 
 @media print {
@@ -162,7 +219,7 @@ button:hover {
   }
 
   .container > *:not(#devis) {
-    display: none;
+    display: none !important;
   }
 
   #devis {
@@ -172,10 +229,9 @@ button:hover {
     box-shadow: none;
   }
 
-  .pdf-button {
-    display: none;
+  .actions {
+    display: none !important;
   }
-
 }
 
 </style>
@@ -188,9 +244,11 @@ button:hover {
 <h1>DevisFacile</h1>
 
 <p class="subtitle">
-Créez votre devis en quelques secondes.
+Créez votre devis professionnel en quelques secondes.
 </p>
 
+
+<!-- INFORMATIONS ENTREPRISE -->
 
 <div class="card">
 
@@ -220,13 +278,15 @@ Créez votre devis en quelques secondes.
 
 <div class="full">
 <label>Adresse</label>
-<input id="adresse" placeholder="1 rue de Paris">
+<input id="adresse" placeholder="1 rue de Paris, 75000 Paris">
 </div>
 
 </div>
 
 </div>
 
+
+<!-- CLIENT -->
 
 <div class="card">
 
@@ -235,12 +295,12 @@ Créez votre devis en quelques secondes.
 <div class="grid">
 
 <div>
-<label>Nom / Entreprise du client</label>
+<label>Nom / Entreprise</label>
 <input id="client" placeholder="Entreprise cliente">
 </div>
 
 <div>
-<label>Email du client</label>
+<label>Email</label>
 <input id="clientEmail" placeholder="client@email.com">
 </div>
 
@@ -249,37 +309,31 @@ Créez votre devis en quelques secondes.
 </div>
 
 
+<!-- PRESTATIONS -->
+
 <div class="card">
 
-<h2>Prestation</h2>
+<h2>Prestations</h2>
 
-<div class="grid">
+<div id="prestations"></div>
 
-<div class="full">
+<button
+type="button"
+class="btn-secondary"
+onclick="ajouterPrestation()">
 
-<label>Description</label>
++ Ajouter une prestation
 
-<textarea id="description"
-placeholder="Création d'un site internet..."></textarea>
-
-</div>
-
-
-<div>
-
-<label>Prix HT (€)</label>
-
-<input
-id="prix"
-type="number"
-min="0"
-step="0.01"
-placeholder="500">
+</button>
 
 </div>
 
 
-<div>
+<!-- TVA -->
+
+<div class="card">
+
+<h2>Taxes</h2>
 
 <label>TVA</label>
 
@@ -292,21 +346,20 @@ placeholder="500">
 
 </select>
 
-</div>
-
-</div>
-
-
 <button onclick="genererDevis()">
+
 Générer mon devis
+
 </button>
 
 </div>
 
 
+<!-- DEVIS -->
+
 <div id="devis">
 
-<div class="devis-header">
+<div class="devis-top">
 
 <div>
 
@@ -314,9 +367,12 @@ Générer mon devis
 DEVIS
 </div>
 
-<p id="date"></p>
+<p id="numeroDevis"></p>
+
+<p id="dateDevis"></p>
 
 </div>
+
 
 <div>
 
@@ -342,37 +398,63 @@ DEVIS
 <p id="devisClientEmail"></p>
 
 
-<div class="ligne">
+<table>
 
-<strong>Prestation</strong>
+<thead>
 
-<p id="devisDescription"></p>
+<tr>
+
+<th>Description</th>
+
+<th>Quantité</th>
+
+<th>Prix unitaire</th>
+
+<th>Total HT</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tableauPrestations">
+
+</tbody>
+
+</table>
+
+
+<div class="resume">
+
+<div>
+
+<span>Total HT</span>
+
+<strong id="totalHT"></strong>
+
+</div>
+
+<div>
+
+<span>TVA</span>
+
+<strong id="montantTVA"></strong>
+
+</div>
+
+<div class="grand-total">
+
+<span>Total TTC</span>
+
+<strong id="totalTTC"></strong>
+
+</div>
 
 </div>
 
 
-<p>
-Prix HT :
-<strong id="devisPrix"></strong>
-</p>
+<div class="actions">
 
-<p>
-TVA :
-<strong id="devisTVA"></strong>
-</p>
-
-
-<div class="total">
-
-Total TTC :
-<span id="devisTotal"></span>
-
-</div>
-
-
-<button
-class="pdf-button"
-onclick="window.print()">
+<button onclick="window.print()">
 
 Télécharger / enregistrer en PDF
 
@@ -382,94 +464,313 @@ Télécharger / enregistrer en PDF
 
 </div>
 
+</div>
+
 
 <script>
 
-function valeur(id) {
+let compteur = 0;
 
-  return document.getElementById(id).value;
+
+/* AJOUTER UNE PRESTATION */
+
+function ajouterPrestation() {
+
+  compteur++;
+
+  const div = document.createElement("div");
+
+  div.className = "prestation";
+
+  div.id = "prestation-" + compteur;
+
+  div.innerHTML = `
+
+    <div class="prestation-grid">
+
+      <div>
+
+        <label>Description</label>
+
+        <input
+          class="description"
+          placeholder="Création d'un site internet">
+
+      </div>
+
+      <div>
+
+        <label>Quantité</label>
+
+        <input
+          class="quantite"
+          type="number"
+          min="1"
+          value="1">
+
+      </div>
+
+      <div>
+
+        <label>Prix unitaire HT (€)</label>
+
+        <input
+          class="prix"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="500">
+
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="remove"
+      onclick="supprimerPrestation(${compteur})">
+
+      Supprimer
+
+    </button>
+
+  `;
+
+  document
+    .getElementById("prestations")
+    .appendChild(div);
 
 }
 
 
+/* SUPPRIMER */
+
+function supprimerPrestation(id) {
+
+  const element =
+    document.getElementById("prestation-" + id);
+
+  if (element) {
+    element.remove();
+  }
+
+}
+
+
+/* FORMAT EURO */
+
+function euro(nombre) {
+
+  return nombre.toLocaleString("fr-FR", {
+    style: "currency",
+    currency: "EUR"
+  });
+
+}
+
+
+/* GENERER DEVIS */
+
 function genererDevis() {
 
-  const entreprise = valeur("entreprise");
-  const siret = valeur("siret");
-  const email = valeur("email");
-  const telephone = valeur("telephone");
-  const adresse = valeur("adresse");
+  const entreprise =
+    document.getElementById("entreprise").value;
 
-  const client = valeur("client");
-  const clientEmail = valeur("clientEmail");
+  const siret =
+    document.getElementById("siret").value;
 
-  const description = valeur("description");
+  const email =
+    document.getElementById("email").value;
 
-  const prix = parseFloat(valeur("prix")) || 0;
-  const tva = parseFloat(valeur("tva")) || 0;
+  const telephone =
+    document.getElementById("telephone").value;
 
-  const total = prix + (prix * tva / 100);
+  const adresse =
+    document.getElementById("adresse").value;
+
+  const client =
+    document.getElementById("client").value;
+
+  const clientEmail =
+    document.getElementById("clientEmail").value;
+
+  const tva =
+    parseFloat(
+      document.getElementById("tva").value
+    ) || 0;
 
 
-  document.getElementById("devisEntreprise").textContent =
-    entreprise;
+  const prestations =
+    document.querySelectorAll(".prestation");
 
-  document.getElementById("devisAdresse").textContent =
-    adresse;
 
-  document.getElementById("devisEmail").textContent =
-    email;
+  if (prestations.length === 0) {
 
-  document.getElementById("devisTelephone").textContent =
-    telephone;
+    alert(
+      "Ajoutez au moins une prestation."
+    );
 
-  document.getElementById("devisSiret").textContent =
+    return;
+  }
+
+
+  let totalHT = 0;
+
+  let lignes = "";
+
+
+  prestations.forEach(function(prestation) {
+
+    const description =
+      prestation.querySelector(".description").value;
+
+    const quantite =
+      parseFloat(
+        prestation.querySelector(".quantite").value
+      ) || 0;
+
+    const prix =
+      parseFloat(
+        prestation.querySelector(".prix").value
+      ) || 0;
+
+    const total =
+      quantite * prix;
+
+    totalHT += total;
+
+
+    lignes += `
+
+      <tr>
+
+        <td>${description}</td>
+
+        <td>${quantite}</td>
+
+        <td>${euro(prix)}</td>
+
+        <td>${euro(total)}</td>
+
+      </tr>
+
+    `;
+
+  });
+
+
+  const montantTVA =
+    totalHT * tva / 100;
+
+  const totalTTC =
+    totalHT + montantTVA;
+
+
+  /* INFORMATIONS */
+
+  document.getElementById(
+    "devisEntreprise"
+  ).textContent = entreprise;
+
+
+  document.getElementById(
+    "devisAdresse"
+  ).textContent = adresse;
+
+
+  document.getElementById(
+    "devisEmail"
+  ).textContent = email;
+
+
+  document.getElementById(
+    "devisTelephone"
+  ).textContent = telephone;
+
+
+  document.getElementById(
+    "devisSiret"
+  ).textContent =
     "SIRET : " + siret;
 
 
-  document.getElementById("devisClient").textContent =
-    client;
-
-  document.getElementById("devisClientEmail").textContent =
-    clientEmail;
+  document.getElementById(
+    "devisClient"
+  ).textContent = client;
 
 
-  document.getElementById("devisDescription").textContent =
-    description;
+  document.getElementById(
+    "devisClientEmail"
+  ).textContent = clientEmail;
 
 
-  document.getElementById("devisPrix").textContent =
-    prix.toLocaleString("fr-FR", {
-      style: "currency",
-      currency: "EUR"
-    });
+  /* NUMERO */
+
+  const numero =
+    "DEV-" +
+    new Date().getTime().toString().slice(-6);
 
 
-  document.getElementById("devisTVA").textContent =
-    tva + " %";
+  document.getElementById(
+    "numeroDevis"
+  ).textContent =
+    "N° " + numero;
 
 
-  document.getElementById("devisTotal").textContent =
-    total.toLocaleString("fr-FR", {
-      style: "currency",
-      currency: "EUR"
-    });
+  /* DATE */
 
-
-  const aujourdHui = new Date();
-
-  document.getElementById("date").textContent =
+  document.getElementById(
+    "dateDevis"
+  ).textContent =
     "Date : " +
-    aujourdHui.toLocaleDateString("fr-FR");
+    new Date().toLocaleDateString("fr-FR");
 
 
-  document.getElementById("devis").style.display = "block";
+  /* TABLE */
 
-  document.getElementById("devis").scrollIntoView({
+  document.getElementById(
+    "tableauPrestations"
+  ).innerHTML = lignes;
+
+
+  /* TOTAUX */
+
+  document.getElementById(
+    "totalHT"
+  ).textContent = euro(totalHT);
+
+
+  document.getElementById(
+    "montantTVA"
+  ).textContent =
+    euro(montantTVA) +
+    " (" + tva + " %)";
+
+
+  document.getElementById(
+    "totalTTC"
+  ).textContent = euro(totalTTC);
+
+
+  /* AFFICHAGE */
+
+  document.getElementById(
+    "devis"
+  ).style.display = "block";
+
+
+  document.getElementById(
+    "devis"
+  ).scrollIntoView({
     behavior: "smooth"
   });
 
 }
+
+
+/* UNE PRESTATION PAR DEFAUT */
+
+ajouterPrestation();
 
 </script>
 
