@@ -245,6 +245,31 @@ const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
+  const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function seConnecter() {
+  const email = document.getElementById("signupEmail").value;
+  const password = document.getElementById("signupPassword").value;
+  const message = document.getElementById("loginMessage");
+
+  message.textContent = "Connexion...";
+
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    message.textContent = "Erreur : " + error.message;
+    return;
+  }
+
+  message.textContent = "Connexion réussie !";
+}
+</script>
 </script>
 <div style="text-align:center; margin:20px 0;">
   <button
@@ -329,7 +354,11 @@ const supabaseClient = supabase.createClient(
 <p class="subtitle">
 Créez votre devis professionnel en quelques secondes.
 </p>
+<button onclick="seConnecter()" style="margin-top:10px;">
+  Se connecter
+</button>
 
+<p id="loginMessage"></p>
 
 <!-- INFORMATIONS ENTREPRISE -->
 
