@@ -247,22 +247,58 @@ const supabaseClient = supabase.createClient(
 );
 </script>
 <div style="text-align:center; margin:20px 0;">
-  <a
-    href="https://buy.stripe.com/test_7sYdR8codcuq7we3jZ6kg00"
-    target="_blank"
+  <button
+    id="stripe-button"
     style="
       display:inline-block;
       padding:14px 25px;
       background:#111827;
       color:white;
-      text-decoration:none;
+      border:none;
       border-radius:8px;
       font-weight:bold;
+      cursor:pointer;
     "
   >
     Passer à DevisFacile Pro — 4,99 €/mois
-  </a>
+  </button>
 </div>
+
+<script>
+  const stripeButton = document.getElementById("stripe-button");
+
+  stripeButton.addEventListener("click", async () => {
+    stripeButton.disabled = true;
+    stripeButton.textContent = "Chargement...";
+
+    try {
+      const response = await fetch(
+        "https://fyjuxmijjfyhpdubsehf.supabase.co/functions/v1/create-checkout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erreur de paiement");
+      }
+
+      window.location.href = data.url;
+
+    } catch (error) {
+      console.error(error);
+      alert("Impossible d'ouvrir le paiement. Réessaie.");
+      stripeButton.disabled = false;
+      stripeButton.textContent =
+        "Passer à DevisFacile Pro — 4,99 €/mois";
+    }
+  });
+</script>
 <div class="container">
 
 <h1>DevisFacile</h1>
