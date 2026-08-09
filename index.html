@@ -1,288 +1,477 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DevisFacile - Créez vos devis gratuitement</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<title>DevisFacile</title>
 
-    body {
-      background: #f4f6f8;
-      color: #1f2937;
-      padding: 30px 15px;
-    }
+<style>
 
-    .container {
-      max-width: 900px;
-      margin: auto;
-    }
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-      color: #111827;
-    }
+body {
+  margin: 0;
+  padding: 30px;
+  background: #f3f4f6;
+  color: #111827;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #6b7280;
-      margin-bottom: 30px;
-    }
+.container {
+  max-width: 900px;
+  margin: auto;
+}
 
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-      margin-bottom: 20px;
-    }
+h1 {
+  text-align: center;
+  margin-bottom: 5px;
+}
 
-    h2 {
-      margin-bottom: 20px;
-      font-size: 20px;
-    }
+.subtitle {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
+.card {
+  background: white;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+}
 
-    .full {
-      grid-column: 1 / -1;
-    }
+h2 {
+  margin-top: 0;
+}
 
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
 
-    input, textarea, select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 15px;
-    }
+.full {
+  grid-column: 1 / -1;
+}
 
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
 
-    .total {
-      margin-top: 20px;
-      padding: 20px;
-      background: #f3f4f6;
-      border-radius: 10px;
-      text-align: right;
-    }
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+}
 
-    .total strong {
-      font-size: 24px;
-    }
+textarea {
+  min-height: 100px;
+}
 
-    button {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 9px;
-      background: #2563eb;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 20px;
-    }
+button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    button:hover {
-      background: #1d4ed8;
-    }
+button:hover {
+  background: #1d4ed8;
+}
 
-    @media (max-width: 650px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+#devis {
+  display: none;
+  background: white;
+  padding: 50px;
+  margin-top: 30px;
+}
 
-      .full {
-        grid-column: auto;
-      }
-    }
-  </style>
+.devis-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.devis-title {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.ligne {
+  margin: 30px 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.total {
+  text-align: right;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.pdf-button {
+  background: #111827;
+}
+
+@media (max-width: 650px) {
+
+  body {
+    padding: 15px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: auto;
+  }
+
+  #devis {
+    padding: 25px;
+  }
+
+  .devis-header {
+    display: block;
+  }
+
+}
+
+@media print {
+
+  body {
+    background: white;
+    padding: 0;
+  }
+
+  .container > *:not(#devis) {
+    display: none;
+  }
+
+  #devis {
+    display: block !important;
+    margin: 0;
+    padding: 20px;
+    box-shadow: none;
+  }
+
+  .pdf-button {
+    display: none;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <h1>DevisFacile</h1>
-    <p class="subtitle">
-      Créez votre devis simplement et gratuitement.
-    </p>
+<h1>DevisFacile</h1>
 
-    <div class="card">
-      <h2>Vos informations</h2>
-
-      <div class="grid">
-
-        <div>
-          <label>Nom / Entreprise</label>
-          <input id="entreprise" placeholder="Jean Dupont">
-        </div>
-
-        <div>
-          <label>SIRET</label>
-          <input id="siret" placeholder="123 456 789 00000">
-        </div>
-
-        <div>
-          <label>Email</label>
-          <input id="email" type="email" placeholder="vous@email.com">
-        </div>
-
-        <div>
-          <label>Téléphone</label>
-          <input id="telephone" placeholder="06 00 00 00 00">
-        </div>
-
-        <div class="full">
-          <label>Adresse</label>
-          <input id="adresse" placeholder="1 rue de Paris, 75000 Paris">
-        </div>
-
-      </div>
-    </div>
+<p class="subtitle">
+Créez votre devis en quelques secondes.
+</p>
 
 
-    <div class="card">
-      <h2>Informations du client</h2>
+<div class="card">
 
-      <div class="grid">
+<h2>Vos informations</h2>
 
-        <div>
-          <label>Nom / Entreprise du client</label>
-          <input id="client" placeholder="Entreprise cliente">
-        </div>
+<div class="grid">
 
-        <div>
-          <label>Email du client</label>
-          <input id="clientEmail" type="email" placeholder="client@email.com">
-        </div>
+<div>
+<label>Nom / Entreprise</label>
+<input id="entreprise" placeholder="Jean Dupont">
+</div>
 
-      </div>
-    </div>
+<div>
+<label>SIRET</label>
+<input id="siret" placeholder="12345678900000">
+</div>
 
+<div>
+<label>Email</label>
+<input id="email" placeholder="vous@email.com">
+</div>
 
-    <div class="card">
-      <h2>Prestation</h2>
+<div>
+<label>Téléphone</label>
+<input id="telephone" placeholder="06 00 00 00 00">
+</div>
 
-      <div class="grid">
+<div class="full">
+<label>Adresse</label>
+<input id="adresse" placeholder="1 rue de Paris">
+</div>
 
-        <div class="full">
-          <label>Description</label>
-          <textarea id="description"
-            placeholder="Création d'un site internet..."></textarea>
-        </div>
+</div>
 
-        <div>
-          <label>Prix HT (€)</label>
-          <input id="prix" type="number" min="0" step="0.01" placeholder="500">
-        </div>
-
-        <div>
-          <label>TVA</label>
-          <select id="tva">
-            <option value="0">0 %</option>
-            <option value="5.5">5,5 %</option>
-            <option value="10">10 %</option>
-            <option value="20" selected>20 %</option>
-          </select>
-        </div>
-
-      </div>
-
-      <div class="total">
-        <p>Total TTC</p>
-        <strong id="total">0,00 €</strong>
-      </div>
-
-      <button onclick="genererDevis()">
-        Générer mon devis
-      </button>
-
-    </div>
-
-  </div>
+</div>
 
 
-  <script>
+<div class="card">
 
-    const prixInput = document.getElementById("prix");
-    const tvaInput = document.getElementById("tva");
-    const totalElement = document.getElementById("total");
+<h2>Client</h2>
 
-    function calculerTotal() {
+<div class="grid">
 
-      const prix = parseFloat(prixInput.value) || 0;
-      const tva = parseFloat(tvaInput.value) || 0;
+<div>
+<label>Nom / Entreprise du client</label>
+<input id="client" placeholder="Entreprise cliente">
+</div>
 
-      const total = prix + (prix * tva / 100);
+<div>
+<label>Email du client</label>
+<input id="clientEmail" placeholder="client@email.com">
+</div>
 
-      totalElement.textContent =
-        total.toLocaleString("fr-FR", {
-          style: "currency",
-          currency: "EUR"
-        });
-    }
+</div>
 
-    prixInput.addEventListener("input", calculerTotal);
-    tvaInput.addEventListener("change", calculerTotal);
+</div>
 
 
-    function genererDevis() {
+<div class="card">
 
-      const entreprise =
-        document.getElementById("entreprise").value;
+<h2>Prestation</h2>
 
-      const client =
-        document.getElementById("client").value;
+<div class="grid">
 
-      const description =
-        document.getElementById("description").value;
+<div class="full">
 
-      const prix =
-        document.getElementById("prix").value;
+<label>Description</label>
 
-      const tva =
-        document.getElementById("tva").value;
+<textarea id="description"
+placeholder="Création d'un site internet..."></textarea>
 
-      const total =
-        (parseFloat(prix) || 0) *
-        (1 + (parseFloat(tva) || 0) / 100);
+</div>
 
-      alert(
-        "Devis créé !\n\n" +
-        "Entreprise : " + entreprise + "\n" +
-        "Client : " + client + "\n" +
-        "Prestation : " + description + "\n" +
-        "Total TTC : " +
-        total.toLocaleString("fr-FR", {
-          style: "currency",
-          currency: "EUR"
-        })
-      );
-    }
 
-  </script>
+<div>
+
+<label>Prix HT (€)</label>
+
+<input
+id="prix"
+type="number"
+min="0"
+step="0.01"
+placeholder="500">
+
+</div>
+
+
+<div>
+
+<label>TVA</label>
+
+<select id="tva">
+
+<option value="0">0 %</option>
+<option value="5.5">5,5 %</option>
+<option value="10">10 %</option>
+<option value="20" selected>20 %</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<button onclick="genererDevis()">
+Générer mon devis
+</button>
+
+</div>
+
+
+<div id="devis">
+
+<div class="devis-header">
+
+<div>
+
+<div class="devis-title">
+DEVIS
+</div>
+
+<p id="date"></p>
+
+</div>
+
+<div>
+
+<strong id="devisEntreprise"></strong>
+
+<p id="devisAdresse"></p>
+
+<p id="devisEmail"></p>
+
+<p id="devisTelephone"></p>
+
+<p id="devisSiret"></p>
+
+</div>
+
+</div>
+
+
+<h3>Client</h3>
+
+<p id="devisClient"></p>
+
+<p id="devisClientEmail"></p>
+
+
+<div class="ligne">
+
+<strong>Prestation</strong>
+
+<p id="devisDescription"></p>
+
+</div>
+
+
+<p>
+Prix HT :
+<strong id="devisPrix"></strong>
+</p>
+
+<p>
+TVA :
+<strong id="devisTVA"></strong>
+</p>
+
+
+<div class="total">
+
+Total TTC :
+<span id="devisTotal"></span>
+
+</div>
+
+
+<button
+class="pdf-button"
+onclick="window.print()">
+
+Télécharger / enregistrer en PDF
+
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+function valeur(id) {
+
+  return document.getElementById(id).value;
+
+}
+
+
+function genererDevis() {
+
+  const entreprise = valeur("entreprise");
+  const siret = valeur("siret");
+  const email = valeur("email");
+  const telephone = valeur("telephone");
+  const adresse = valeur("adresse");
+
+  const client = valeur("client");
+  const clientEmail = valeur("clientEmail");
+
+  const description = valeur("description");
+
+  const prix = parseFloat(valeur("prix")) || 0;
+  const tva = parseFloat(valeur("tva")) || 0;
+
+  const total = prix + (prix * tva / 100);
+
+
+  document.getElementById("devisEntreprise").textContent =
+    entreprise;
+
+  document.getElementById("devisAdresse").textContent =
+    adresse;
+
+  document.getElementById("devisEmail").textContent =
+    email;
+
+  document.getElementById("devisTelephone").textContent =
+    telephone;
+
+  document.getElementById("devisSiret").textContent =
+    "SIRET : " + siret;
+
+
+  document.getElementById("devisClient").textContent =
+    client;
+
+  document.getElementById("devisClientEmail").textContent =
+    clientEmail;
+
+
+  document.getElementById("devisDescription").textContent =
+    description;
+
+
+  document.getElementById("devisPrix").textContent =
+    prix.toLocaleString("fr-FR", {
+      style: "currency",
+      currency: "EUR"
+    });
+
+
+  document.getElementById("devisTVA").textContent =
+    tva + " %";
+
+
+  document.getElementById("devisTotal").textContent =
+    total.toLocaleString("fr-FR", {
+      style: "currency",
+      currency: "EUR"
+    });
+
+
+  const aujourdHui = new Date();
+
+  document.getElementById("date").textContent =
+    "Date : " +
+    aujourdHui.toLocaleDateString("fr-FR");
+
+
+  document.getElementById("devis").style.display = "block";
+
+  document.getElementById("devis").scrollIntoView({
+    behavior: "smooth"
+  });
+
+}
+
+</script>
 
 </body>
 </html>
