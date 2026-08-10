@@ -250,7 +250,9 @@ const supabaseClient = supabase.createClient(
   SUPABASE_KEY
 );
 
-async function seConnecter() {
+function seConnecter() {
+  alert("Le bouton fonctionne !");
+}
   const email = document.getElementById("signupEmail").value;
   const password = document.getElementById("signupPassword").value;
   const message = document.getElementById("loginMessage");
