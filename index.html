@@ -265,6 +265,25 @@ async function seConnecter() {
 
   message.textContent = "Connexion réussie !";
 }
+  supabaseClient.auth.onAuthStateChange(async (event) => {
+  if (event === "PASSWORD_RECOVERY") {
+    const nouveauMotDePasse = prompt("Entrez votre nouveau mot de passe :");
+
+    if (!nouveauMotDePasse) {
+      return;
+    }
+
+    const { error } = await supabaseClient.auth.updateUser({
+      password: nouveauMotDePasse
+    });
+
+    if (error) {
+      alert("Erreur : " + error.message);
+    } else {
+      alert("Mot de passe modifié avec succès !");
+    }
+  }
+});
 </script>
 <div style="text-align:center; margin:20px 0;">
   <button
