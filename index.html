@@ -236,8 +236,7 @@ th {
 
 </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<body><script>
+<script>
 const SUPABASE_URL = "https://fyjuxmijjfyhpdubsehf.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Cm9esm__F5lcamo-95HQyQ_Rq1czM4w";
 
@@ -245,14 +244,8 @@ const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
-  const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
 
-function seConnecter() {
-  alert("Le bouton fonctionne !");
-}
+async function seConnecter() {
   const email = document.getElementById("signupEmail").value;
   const password = document.getElementById("signupPassword").value;
   const message = document.getElementById("loginMessage");
@@ -271,7 +264,6 @@ function seConnecter() {
 
   message.textContent = "Connexion réussie !";
 }
-</script>
 </script>
 <div style="text-align:center; margin:20px 0;">
   <button
@@ -356,10 +348,9 @@ function seConnecter() {
 <p class="subtitle">
 Créez votre devis professionnel en quelques secondes.
 </p>
-<button onclick="seConnecter()" style="margin-top:10px;">
+<button id="loginButton" style="margin-top:10px;">
   Se connecter
 </button>
-
 <p id="loginMessage"></p>
 
 <!-- INFORMATIONS ENTREPRISE -->
